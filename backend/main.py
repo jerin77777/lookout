@@ -75,15 +75,13 @@ async def root():
 async def relay_socket_event(request: Request):
     try:
         data = await request.json()
-        from backend.procedures.auth.relay_event import relay_event, RelayEventParams
-        res = await relay_event(RelayEventParams(
-            socketId=data.get("socketId"),
-            socket_id=data.get("socket_id"),
-            event=data.get("event", "message"),
-            body=data.get("body"),
-            data=data.get("data"),
-        ))
-        return {"success": res.success, "socketId": res.socketId}
+        target_socket_id = data.get("socketId") or data.get("socket_id")
+        if not target_socket_id:
+            return JSONResponse({"success": False, "error": "Missing socketId"}, status_code=400)
+        payload = data.get("body") if data.get("body") is not None else data.get("data")
+        event = data.get("event", "message")
+        success = await event_server.send(socket_id=target_socket_id, body=payload, event=event)
+        return {"success": success, "socketId": target_socket_id}
     except Exception as e:
         logger.error(f"Relay error: {e}")
         return JSONResponse({"success": False, "error": str(e)}, status_code=500)
