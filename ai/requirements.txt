@@ -1,0 +1,10 @@
+faster-whisper
+flask
+flask-cors
+numpy
+torch
+torchvision
+opencv-python
+pandas
+Pillow
+easydict

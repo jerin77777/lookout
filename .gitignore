@@ -1,0 +1,119 @@
+# ==========================================
+# Environment Variables & Secrets
+# ==========================================
+.env
+.env.*
+!.env.example
+!.env.template
+*.key
+*.pem
+key.properties
+*.keystore
+*.jks
+*.p12
+*.p8
+*.mobileprovision
+.keys/
+google-services.json
+GoogleService-Info.plist
+
+# ==========================================
+# Dependencies & Virtual Environments
+# ==========================================
+node_modules/
+.pnpm-store/
+venv/
+.venv/
+env/
+ENV/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ==========================================
+# Build Artifacts & Output Directories
+# ==========================================
+dist/
+.output/
+.arri/
+backend/arri/
+backend/uploads/
+.next/
+.expo/
+web-build/
+build/
+**/build/**
+**/build/
+**/intermediates/**
+**/generated/**
+bin/
+obj/
+out/
+.dart_tool/
+**/.dart_tool/**
+.pub-cache/
+.pub/
+
+# Native Build Outputs & Caches (All Subprojects)
+**/android/.gradle/**
+**/android/app/build/**
+**/android/.cxx/**
+**/android/local.properties
+**/android/.navigation
+**/ios/Pods/**
+**/ios/.symlinks/**
+**/ios/build/**
+**/ios/DerivedData/**
+
+# Flutter / Dart Specific Build Files
+**/doc/api/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# ==========================================
+# Binary Executables & Compiled Outputs
+# ==========================================
+*.apk
+*.aab
+*.ipa
+*.app
+*.exe
+*.dll
+*.so
+*.dylib
+*.tsbuildinfo
+*.dill
+
+# ==========================================
+# Large Temporary Archives & Duplicate Assets
+# ==========================================
+*.zip.cache
+ai_yoga/HybrIK/model_files.zip
+yoga/assets/amber.glb
+
+# ==========================================
+# Uploads, Temp Files & Logs
+# ==========================================
+uploads/
+scratch/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+arri.config.ts.bak
+
+# ==========================================
+# IDE & OS Artifacts
+# ==========================================
+.vscode/
+.idea/
+.metadata
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -1,0 +1,1664 @@
+{
+  "schemaVersion": "0.0.8",
+  "info": {
+    "name": "Vyom Python Backend",
+    "version": "1.0.0",
+    "description": "Python Arri RPC Server"
+  },
+  "procedures": {
+    "ai.hybrikHealth": {
+      "transport": "http",
+      "method": "get",
+      "path": "/rpc/ai/hybrikHealth",
+      "params": "HybrIkHealthParams",
+      "response": "HybrIkHealthResponse"
+    },
+    "ai.hybrikInfer": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/ai/hybrikInfer",
+      "params": "HybrIkInferParams",
+      "response": "HybrIkInferResponse"
+    },
+    "ai.generateVoice": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/ai/generateVoice",
+      "params": "TextToSpeechParams",
+      "response": "TextToSpeechResponse"
+    },
+    "ai.textToSpeech": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/ai/textToSpeech",
+      "params": "TextToSpeechParams",
+      "response": "TextToSpeechResponse"
+    },
+    "auth.checkVerificationStatus": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/auth/checkVerificationStatus",
+      "params": "CheckVerificationStatusParams",
+      "response": "CheckVerificationStatusResponse"
+    },
+    "auth.completeOnboarding": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/auth/completeOnboarding",
+      "params": "CompleteOnboardingParams",
+      "response": "CompleteOnboardingResponse"
+    },
+    "auth.getOnboardingStatus": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/auth/getOnboardingStatus",
+      "params": "GetOnboardingStatusParams",
+      "response": "GetOnboardingStatusResponse"
+    },
+    "auth.logout": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/auth/logout",
+      "params": "LogoutParams",
+      "response": "LogoutResponse"
+    },
+    "auth.refresh": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/auth/refresh",
+      "params": "RefreshTokenParams",
+      "response": "RefreshTokenResponse"
+    },
+    "auth.relayEvent": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/auth/relayEvent",
+      "params": "RelayEventParams",
+      "response": "RelayEventResponse"
+    },
+    "auth.sendOtp": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/auth/sendOtp",
+      "params": "SendOtpParams",
+      "response": "SendOtpResponse"
+    },
+    "auth.signin": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/auth/signin",
+      "params": "LoginUserParams",
+      "response": "LoginUserResponse"
+    },
+    "auth.signup": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/auth/signup",
+      "params": "RegisterUserParams",
+      "response": "RegisterUserResponse"
+    },
+    "auth.updateProfile": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/auth/updateProfile",
+      "params": "UpdateProfileParams",
+      "response": "UpdateProfileResponse"
+    },
+    "auth.verifyEmail": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/auth/verifyEmail",
+      "params": "VerifyEmailOtpParams",
+      "response": "VerifyEmailOtpResponse"
+    },
+    "nutrient.deleteFoodEntry": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/nutrient/deleteFoodEntry",
+      "params": "DeleteFoodEntryParams",
+      "response": "DeleteFoodEntryResponse"
+    },
+    "nutrient.getDailySummary": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/nutrient/getDailySummary",
+      "params": "GetDailySummaryParams",
+      "response": "GetDailySummaryResponse"
+    },
+    "nutrient.saveFoodEntry": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/nutrient/saveFoodEntry",
+      "params": "SaveFoodEntryParams",
+      "response": "SaveFoodEntryResponse"
+    },
+    "poses.createPose": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/poses/createPose",
+      "params": "CreatePoseParams",
+      "response": "CreatePoseResponse"
+    },
+    "poses.deletePose": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/poses/deletePose",
+      "params": "DeletePoseParams",
+      "response": "DeletePoseResponse"
+    },
+    "poses.getPoses": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/poses/getPoses",
+      "params": "GetPosesParams",
+      "response": "GetPosesResponse"
+    },
+    "poses.saveDefaultPose": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/poses/saveDefaultPose",
+      "params": "SaveDefaultPoseParams",
+      "response": "SaveDefaultPoseResponse"
+    },
+    "poses.updatePose": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/poses/updatePose",
+      "params": "UpdatePoseParams",
+      "response": "UpdatePoseResponse"
+    },
+    "tv.authorize": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/tv/authorize",
+      "params": "AuthorizePairingParams",
+      "response": "AuthorizePairingResponse"
+    },
+    "tv.checkStatus": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/tv/checkStatus",
+      "params": "CheckStatusParams",
+      "response": "CheckStatusResponse"
+    },
+    "tv.getUserTvs": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/tv/getUserTvs",
+      "params": "GetUserTVsParams",
+      "response": "GetUserTVsResponse"
+    },
+    "tv.initiate": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/tv/initiate",
+      "params": "InitiatePairingParams",
+      "response": "InitiatePairingResponse"
+    },
+    "tv.validate": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/tv/validate",
+      "params": "ValidateTVParams",
+      "response": "ValidateTVResponse"
+    },
+    "tv.watchEvents": {
+      "transport": "http",
+      "method": "get",
+      "path": "/rpc/tv/watchEvents",
+      "params": "WatchEventsParams",
+      "response": "EventPayload",
+      "isEventStream": true,
+      "description": "Streams real-time events for TV/User watcher session using socketId and userId"
+    },
+    "yoga.deleteMusic": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/yoga/deleteMusic",
+      "params": "DeleteMusicParams",
+      "response": "DeleteMusicResponse"
+    },
+    "yoga.getMusicList": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/yoga/getMusicList",
+      "params": "GetMusicListParams",
+      "response": "GetMusicListResponse"
+    },
+    "yoga.getTutorial": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/yoga/getTutorial",
+      "params": "GetTutorialParams",
+      "response": "GetTutorialResponse"
+    },
+    "yoga.getTutorials": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/yoga/getTutorials",
+      "params": "GetTutorialsParams",
+      "response": "GetTutorialsResponse"
+    },
+    "yoga.setDefaultMusic": {
+      "transport": "http",
+      "method": "post",
+      "path": "/rpc/yoga/setDefaultMusic",
+      "params": "SetDefaultMusicParams",
+      "response": "SetDefaultMusicResponse"
+    }
+  },
+  "definitions": {
+    "HybrIkHealthParams": {
+      "properties": {},
+      "metadata": {
+        "id": "HybrIkHealthParams"
+      }
+    },
+    "HybrIkHealthResponse": {
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "modelLoaded": {
+          "type": "boolean"
+        },
+        "device": {
+          "type": "string"
+        },
+        "jointCount": {
+          "type": "int32"
+        }
+      },
+      "metadata": {
+        "id": "HybrIkHealthResponse"
+      },
+      "optionalProperties": {
+        "error": {
+          "type": "string"
+        }
+      }
+    },
+    "HybrIkInferParams": {
+      "properties": {
+        "image": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "HybrIkInferParams"
+      }
+    },
+    "HybrIkInferResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        }
+      },
+      "metadata": {
+        "id": "HybrIkInferResponse"
+      },
+      "optionalProperties": {
+        "message": {
+          "type": "string"
+        },
+        "processTimeMs": {
+          "type": "float64"
+        },
+        "bbox": {
+          "elements": {
+            "type": "float64"
+          }
+        },
+        "jointNames": {
+          "elements": {
+            "type": "string"
+          }
+        },
+        "joints3d": {
+          "elements": {
+            "elements": {
+              "type": "float64"
+            }
+          }
+        },
+        "joints2d": {
+          "elements": {
+            "elements": {
+              "type": "float64"
+            }
+          }
+        },
+        "bodyPose": {
+          "elements": {
+            "type": "float64"
+          }
+        },
+        "betas": {
+          "elements": {
+            "type": "float64"
+          }
+        },
+        "camera": {
+          "elements": {
+            "type": "float64"
+          }
+        }
+      }
+    },
+    "TextToSpeechParams": {
+      "properties": {
+        "text": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "TextToSpeechParams"
+      },
+      "optionalProperties": {
+        "voice": {
+          "type": "string"
+        }
+      }
+    },
+    "TextToSpeechResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "TextToSpeechResponse"
+      },
+      "optionalProperties": {
+        "audioBase64": {
+          "type": "string"
+        },
+        "durationSeconds": {
+          "type": "float64"
+        },
+        "generationTimeSeconds": {
+          "type": "float64"
+        },
+        "voice": {
+          "type": "string"
+        }
+      }
+    },
+    "CheckVerificationStatusParams": {
+      "properties": {
+        "userId": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "CheckVerificationStatusParams"
+      }
+    },
+    "CheckVerificationStatusResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "isVerified": {
+          "type": "boolean"
+        }
+      },
+      "metadata": {
+        "id": "CheckVerificationStatusResponse"
+      }
+    },
+    "CompleteOnboardingParams": {
+      "properties": {
+        "userId": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "CompleteOnboardingParams"
+      },
+      "optionalProperties": {
+        "role": {
+          "type": "string"
+        }
+      }
+    },
+    "CompleteOnboardingResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "CompleteOnboardingResponse"
+      }
+    },
+    "GetOnboardingStatusParams": {
+      "properties": {
+        "userId": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "GetOnboardingStatusParams"
+      }
+    },
+    "GetOnboardingStatusResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "isOnboarded": {
+          "type": "boolean"
+        }
+      },
+      "metadata": {
+        "id": "GetOnboardingStatusResponse"
+      }
+    },
+    "LogoutParams": {
+      "properties": {
+        "userId": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "LogoutParams"
+      }
+    },
+    "LogoutResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        }
+      },
+      "metadata": {
+        "id": "LogoutResponse"
+      }
+    },
+    "RefreshTokenParams": {
+      "properties": {
+        "token": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "RefreshTokenParams"
+      }
+    },
+    "RefreshTokenResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        }
+      },
+      "metadata": {
+        "id": "RefreshTokenResponse"
+      },
+      "optionalProperties": {
+        "token": {
+          "type": "string"
+        }
+      }
+    },
+    "RelayEventParams": {
+      "properties": {},
+      "metadata": {
+        "id": "RelayEventParams"
+      },
+      "optionalProperties": {
+        "socketId": {
+          "type": "string"
+        },
+        "socket_id": {
+          "type": "string"
+        },
+        "event": {
+          "type": "string"
+        },
+        "body": {
+          "type": "any"
+        },
+        "data": {
+          "type": "any"
+        }
+      }
+    },
+    "RelayEventResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        }
+      },
+      "metadata": {
+        "id": "RelayEventResponse"
+      },
+      "optionalProperties": {
+        "socketId": {
+          "type": "string"
+        },
+        "error": {
+          "type": "string"
+        }
+      }
+    },
+    "SendOtpParams": {
+      "properties": {
+        "userId": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "SendOtpParams"
+      }
+    },
+    "SendOtpResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "SendOtpResponse"
+      }
+    },
+    "LoginUserParams": {
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "LoginUserParams"
+      }
+    },
+    "LoginUserResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "LoginUserResponse"
+      },
+      "optionalProperties": {
+        "token": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "userName": {
+          "type": "string"
+        },
+        "isEmailVerified": {
+          "type": "boolean"
+        }
+      }
+    },
+    "RegisterUserParams": {
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "RegisterUserParams"
+      },
+      "optionalProperties": {
+        "userName": {
+          "type": "string"
+        }
+      }
+    },
+    "RegisterUserResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "RegisterUserResponse"
+      },
+      "optionalProperties": {
+        "token": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "userName": {
+          "type": "string"
+        },
+        "isEmailVerified": {
+          "type": "boolean"
+        }
+      }
+    },
+    "UpdateProfileParams": {
+      "properties": {
+        "userId": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "UpdateProfileParams"
+      },
+      "optionalProperties": {
+        "userName": {
+          "type": "string"
+        },
+        "avatarUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "UpdateProfileResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "UpdateProfileResponse"
+      }
+    },
+    "VerifyEmailOtpParams": {
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "otp": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "VerifyEmailOtpParams"
+      }
+    },
+    "VerifyEmailOtpResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "VerifyEmailOtpResponse"
+      }
+    },
+    "DeleteFoodEntryParams": {
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "DeleteFoodEntryParams"
+      }
+    },
+    "DeleteFoodEntryResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "DeleteFoodEntryResponse"
+      }
+    },
+    "GetDailySummaryParams": {
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "GetDailySummaryParams"
+      }
+    },
+    "GetDailySummaryResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        },
+        "summary": {
+          "ref": "DailySummary"
+        }
+      },
+      "metadata": {
+        "id": "GetDailySummaryResponse"
+      }
+    },
+    "DailySummary": {
+      "properties": {
+        "date": {
+          "type": "string"
+        },
+        "totalCalories": {
+          "type": "float64"
+        },
+        "totalMass": {
+          "type": "float64"
+        },
+        "totalFats": {
+          "type": "float64"
+        },
+        "totalCarbs": {
+          "type": "float64"
+        },
+        "totalProteins": {
+          "type": "float64"
+        },
+        "totalEntries": {
+          "type": "int32"
+        },
+        "entriesByMeal": {
+          "ref": "EntriesByMeal"
+        }
+      },
+      "metadata": {
+        "id": "DailySummary"
+      }
+    },
+    "EntriesByMeal": {
+      "properties": {},
+      "metadata": {
+        "id": "EntriesByMeal"
+      },
+      "optionalProperties": {
+        "breakfast": {
+          "elements": {
+            "ref": "FoodEntryItem"
+          }
+        },
+        "lunch": {
+          "elements": {
+            "ref": "FoodEntryItem"
+          }
+        },
+        "dinner": {
+          "elements": {
+            "ref": "FoodEntryItem"
+          }
+        }
+      }
+    },
+    "FoodEntryItem": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "mealType": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string"
+        },
+        "photoUrl": {
+          "type": "string"
+        },
+        "foodLabel": {
+          "type": "string"
+        },
+        "classIndex": {
+          "type": "int32"
+        },
+        "confidence": {
+          "type": "float64"
+        },
+        "calories": {
+          "type": "float64"
+        },
+        "mass": {
+          "type": "float64"
+        },
+        "fats": {
+          "type": "float64"
+        },
+        "carbs": {
+          "type": "float64"
+        },
+        "proteins": {
+          "type": "float64"
+        },
+        "createdAt": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "FoodEntryItem"
+      }
+    },
+    "SaveFoodEntryParams": {
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "mealType": {
+          "type": "string"
+        },
+        "photoUrl": {
+          "type": "string"
+        },
+        "foodLabel": {
+          "type": "string"
+        },
+        "classIndex": {
+          "type": "int32"
+        },
+        "confidence": {
+          "type": "float64"
+        },
+        "calories": {
+          "type": "float64"
+        },
+        "mass": {
+          "type": "float64"
+        },
+        "fats": {
+          "type": "float64"
+        },
+        "carbs": {
+          "type": "float64"
+        },
+        "proteins": {
+          "type": "float64"
+        }
+      },
+      "metadata": {
+        "id": "SaveFoodEntryParams"
+      }
+    },
+    "SaveFoodEntryResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "SaveFoodEntryResponse"
+      },
+      "optionalProperties": {
+        "entry": {
+          "ref": "FoodEntryItem"
+        }
+      }
+    },
+    "CreatePoseParams": {
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "skeleton": {
+          "elements": {
+            "ref": "Bone"
+          }
+        }
+      },
+      "metadata": {
+        "id": "CreatePoseParams"
+      }
+    },
+    "Bone": {
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "rotation": {
+          "ref": "Vector3"
+        }
+      },
+      "metadata": {
+        "id": "Bone"
+      },
+      "optionalProperties": {
+        "position": {
+          "ref": "Vector3"
+        },
+        "lockToFloor": {
+          "type": "boolean"
+        },
+        "ikLegsEnabled": {
+          "type": "boolean"
+        },
+        "ikArmsEnabled": {
+          "type": "boolean"
+        },
+        "symmetricArmsEnabled": {
+          "type": "boolean"
+        },
+        "symmetricLegsEnabled": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Vector3": {
+      "properties": {
+        "x": {
+          "type": "float64"
+        },
+        "y": {
+          "type": "float64"
+        },
+        "z": {
+          "type": "float64"
+        }
+      },
+      "metadata": {
+        "id": "Vector3"
+      }
+    },
+    "CreatePoseResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "CreatePoseResponse"
+      },
+      "optionalProperties": {
+        "pose": {
+          "ref": "Pose"
+        }
+      }
+    },
+    "Pose": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "Pose"
+      },
+      "optionalProperties": {
+        "skeleton": {
+          "elements": {
+            "ref": "Bone"
+          }
+        },
+        "lastDetectedPose": {
+          "elements": {
+            "ref": "Bone"
+          }
+        }
+      }
+    },
+    "DeletePoseParams": {
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "DeletePoseParams"
+      }
+    },
+    "DeletePoseResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "DeletePoseResponse"
+      }
+    },
+    "GetPosesParams": {
+      "properties": {},
+      "metadata": {
+        "id": "GetPosesParams"
+      }
+    },
+    "GetPosesResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "GetPosesResponse"
+      },
+      "optionalProperties": {
+        "poses": {
+          "elements": {
+            "ref": "Pose"
+          }
+        }
+      }
+    },
+    "SaveDefaultPoseParams": {
+      "properties": {},
+      "metadata": {
+        "id": "SaveDefaultPoseParams"
+      },
+      "optionalProperties": {
+        "skeleton": {
+          "elements": {
+            "type": "any"
+          }
+        }
+      }
+    },
+    "SaveDefaultPoseResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        }
+      },
+      "metadata": {
+        "id": "SaveDefaultPoseResponse"
+      },
+      "optionalProperties": {
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "UpdatePoseParams": {
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "UpdatePoseParams"
+      },
+      "optionalProperties": {
+        "name": {
+          "type": "string"
+        },
+        "skeleton": {
+          "elements": {
+            "ref": "Bone"
+          }
+        },
+        "lastDetectedPose": {
+          "elements": {
+            "ref": "Bone"
+          }
+        }
+      }
+    },
+    "UpdatePoseResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "UpdatePoseResponse"
+      },
+      "optionalProperties": {
+        "pose": {
+          "ref": "Pose"
+        }
+      }
+    },
+    "AuthorizePairingParams": {
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "AuthorizePairingParams"
+      },
+      "optionalProperties": {
+        "socketId": {
+          "type": "string"
+        }
+      }
+    },
+    "AuthorizePairingResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "AuthorizePairingResponse"
+      }
+    },
+    "CheckStatusParams": {
+      "properties": {
+        "code": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "CheckStatusParams"
+      }
+    },
+    "CheckStatusResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "status": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "CheckStatusResponse"
+      },
+      "optionalProperties": {
+        "token": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        }
+      }
+    },
+    "GetUserTVsParams": {
+      "properties": {
+        "userId": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "GetUserTVsParams"
+      }
+    },
+    "GetUserTVsResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        }
+      },
+      "metadata": {
+        "id": "GetUserTVsResponse"
+      },
+      "optionalProperties": {
+        "devices": {
+          "elements": {
+            "ref": "TVDevice"
+          }
+        }
+      }
+    },
+    "TVDevice": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "deviceName": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "TVDevice"
+      }
+    },
+    "InitiatePairingParams": {
+      "properties": {
+        "deviceName": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "InitiatePairingParams"
+      }
+    },
+    "InitiatePairingResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "InitiatePairingResponse"
+      }
+    },
+    "ValidateTVParams": {
+      "properties": {
+        "token": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "ValidateTVParams"
+      }
+    },
+    "ValidateTVResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "valid": {
+          "type": "boolean"
+        }
+      },
+      "metadata": {
+        "id": "ValidateTVResponse"
+      },
+      "optionalProperties": {
+        "userId": {
+          "type": "string"
+        }
+      }
+    },
+    "WatchEventsParams": {
+      "properties": {},
+      "metadata": {
+        "id": "WatchEventsParams"
+      },
+      "optionalProperties": {
+        "socketId": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        }
+      }
+    },
+    "EventPayload": {
+      "properties": {
+        "event": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "EventPayload"
+      },
+      "optionalProperties": {
+        "socketId": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "data": {
+          "type": "any"
+        }
+      }
+    },
+    "DeleteMusicParams": {
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "DeleteMusicParams"
+      }
+    },
+    "DeleteMusicResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "DeleteMusicResponse"
+      }
+    },
+    "GetMusicListParams": {
+      "properties": {},
+      "metadata": {
+        "id": "GetMusicListParams"
+      }
+    },
+    "GetMusicListResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "GetMusicListResponse"
+      },
+      "optionalProperties": {
+        "musicList": {
+          "elements": {
+            "ref": "MusicTrack"
+          }
+        }
+      }
+    },
+    "MusicTrack": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "audioUrl": {
+          "type": "string"
+        },
+        "streamUrl": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "MusicTrack"
+      },
+      "optionalProperties": {
+        "artist": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "coverImageUrl": {
+          "type": "string"
+        },
+        "duration": {
+          "type": "float64"
+        },
+        "isDefault": {
+          "type": "boolean"
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      }
+    },
+    "GetTutorialParams": {
+      "properties": {
+        "tutorialId": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "GetTutorialParams"
+      }
+    },
+    "GetTutorialResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "GetTutorialResponse"
+      },
+      "optionalProperties": {
+        "tutorial": {
+          "ref": "YogaTutorial"
+        }
+      }
+    },
+    "YogaTutorial": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "videoUrl": {
+          "type": "string"
+        },
+        "rawVideoUrl": {
+          "type": "string"
+        },
+        "coverImageUrl": {
+          "type": "string"
+        },
+        "duration": {
+          "type": "int32"
+        },
+        "createdAt": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "YogaTutorial"
+      },
+      "optionalProperties": {
+        "description": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        },
+        "checkpoints": {
+          "elements": {
+            "ref": "CheckPoint"
+          }
+        }
+      }
+    },
+    "CheckPoint": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "float64"
+        },
+        "rotations": {
+          "elements": {
+            "ref": "Rotation"
+          }
+        },
+        "worldLandmarks": {
+          "elements": {
+            "elements": {
+              "type": "float64"
+            }
+          }
+        },
+        "observables": {
+          "elements": {
+            "ref": "Observable"
+          }
+        },
+        "verifyPose": {
+          "type": "boolean"
+        },
+        "accuracyThreshold": {
+          "type": "float64"
+        }
+      },
+      "metadata": {
+        "id": "CheckPoint"
+      },
+      "optionalProperties": {
+        "audio": {
+          "ref": "Audio"
+        }
+      }
+    },
+    "Rotation": {
+      "properties": {
+        "bone": {
+          "type": "string"
+        },
+        "x": {
+          "type": "float64"
+        },
+        "y": {
+          "type": "float64"
+        },
+        "z": {
+          "type": "float64"
+        }
+      },
+      "metadata": {
+        "id": "Rotation"
+      }
+    },
+    "Observable": {
+      "properties": {
+        "bone": {
+          "type": "string"
+        },
+        "x": {
+          "type": "boolean"
+        },
+        "y": {
+          "type": "boolean"
+        },
+        "z": {
+          "type": "boolean"
+        }
+      },
+      "metadata": {
+        "id": "Observable"
+      }
+    },
+    "Audio": {
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "rawUrl": {
+          "type": "string"
+        },
+        "duration": {
+          "type": "float64"
+        }
+      },
+      "metadata": {
+        "id": "Audio"
+      }
+    },
+    "GetTutorialsParams": {
+      "properties": {},
+      "metadata": {
+        "id": "GetTutorialsParams"
+      }
+    },
+    "GetTutorialsResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "GetTutorialsResponse"
+      },
+      "optionalProperties": {
+        "tutorials": {
+          "elements": {
+            "ref": "YogaTutorial"
+          }
+        }
+      }
+    },
+    "SetDefaultMusicParams": {
+      "properties": {},
+      "metadata": {
+        "id": "SetDefaultMusicParams"
+      },
+      "optionalProperties": {
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "SetDefaultMusicResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "metadata": {
+        "id": "SetDefaultMusicResponse"
+      }
+    }
+  }
+}

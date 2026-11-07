@@ -1,0 +1,18 @@
+{
+  "name": "@arrirpc/client",
+  "version": "0.83.1",
+  "type": "module",
+  "main": "./src/_index.ts",
+  "module": "./src/_index.ts",
+  "types": "./src/_index.ts",
+  "exports": {
+    ".": {
+      "import": "./src/_index.ts",
+      "types": "./src/_index.ts"
+    }
+  },
+  "dependencies": {
+    "event-source-plus": "^0.1.15",
+    "ofetch": "^1.5.1"
+  }
+}
