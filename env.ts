@@ -18,6 +18,8 @@ export const SMTP_PASS = process.env['SMTP_PASS'];
 export const FROM_EMAIL = process.env['FROM_EMAIL'];
 export const FE_URL = process.env['FE_URL'];
 export const BACKEND_URL = process.env['BACKEND_URL'];
+export const FILE_LOCATION = process.env['FILE_LOCATION'] || './uploads';
+export const FILE_SERVER_URL = process.env['FILE_SERVER_URL'] || '/uploads';
 
 if (!DATABASE_URL) {
     throw new Error('Missing required environment var DATABASE_URL');
@@ -28,4 +30,6 @@ export const env = {
     DATABASE_URL,
     JWT_SECRET,
     BACKEND_URL,
+    FILE_LOCATION,
+    FILE_SERVER_URL,
 };

@@ -76,23 +76,10 @@ def run_dev():
 
 def ensure_nginx_started():
     try:
-        import subprocess
-        # Check tasklist for nginx.exe on Windows
-        tasklist_output = subprocess.check_output('tasklist /FI "IMAGENAME eq nginx.exe"', shell=True, text=True)
-        if "nginx.exe" not in tasklist_output:
-            print("Nginx is not running. Starting Nginx...", flush=True)
-            nginx_dir = os.path.abspath(os.path.join(os.getcwd(), "nginx"))
-            nginx_exe = os.path.join(nginx_dir, "nginx.exe")
-            if os.path.exists(nginx_exe):
-                # Start nginx in the nginx directory
-                subprocess.Popen([nginx_exe], cwd=nginx_dir, shell=True)
-                print("Nginx started successfully.", flush=True)
-            else:
-                pass # Nginx optional; FastAPI directly serves requests
-        else:
-            print("Nginx is already running.", flush=True)
+        from backend.services.nginx_service import ensure_nginx_started as svc_ensure_nginx
+        svc_ensure_nginx()
     except Exception as e:
-        print(f"Warning: Failed to check/start Nginx: {e}", flush=True)
+        print(f"Warning: Failed to configure/start Nginx: {e}", flush=True)
 
 def main():
     ensure_nginx_started()

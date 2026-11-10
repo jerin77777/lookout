@@ -24,6 +24,7 @@ from backend.db.database import db
 from backend.services.media_server import media_server
 from backend.services.event_server import event_server
 from backend.db.sqlmodel_db import init_db
+from backend.services.nginx_service import update_nginx_conf, get_file_server_config
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("PyBackend")
@@ -42,6 +43,13 @@ async def startup_event():
         logger.critical(f"❌ [Fatal Startup Error] Database initialization failed: {e}")
         logger.critical("❌ Server startup aborted: Offline/standalone mode is disabled. An active database connection is required.")
         raise
+
+    # Update Nginx config with FILE_LOCATION / FILE_SERVER_URL from .env
+    try:
+        update_nginx_conf()
+        logger.info("Nginx configuration updated with file server location from environment.")
+    except Exception as e:
+        logger.warning(f"Nginx config update skipped: {e}")
 
 @fastapi_app.on_event("shutdown")
 async def shutdown_event():
@@ -113,10 +121,12 @@ async def upload_media_route(
         logger.error(f"Media upload error: {e}")
         return {"success": False, "message": f"Upload failed: {str(e)}"}
 
-# Serve static uploads
-uploads_dir = os.path.abspath("uploads")
+# Serve static uploads — location and URL path driven by FILE_LOCATION / FILE_SERVER_URL env vars
+_file_location, _nginx_path, _file_server_url_path = get_file_server_config()
+uploads_dir = _file_location
 os.makedirs(uploads_dir, exist_ok=True)
-fastapi_app.mount("/uploads", StaticFiles(directory=uploads_dir), name="uploads")
+_mount_path = "/" + _file_server_url_path.strip("/")   # e.g. "/uploads"
+fastapi_app.mount(_mount_path, StaticFiles(directory=uploads_dir), name="uploads")
 
 # Stream Helper with Range Request support (HTTP 206)
 def range_requests_response(request: Request, file_path: str, content_type: str):
