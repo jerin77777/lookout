@@ -1,5 +1,5 @@
-import { EventSourcePlusOptions, type HttpMethod } from 'event-source-plus';
-import { $Fetch, FetchError, FetchOptions, ofetch } from 'ofetch';
+import { type EventSourcePlusOptions, type HttpMethod } from 'event-source-plus';
+import { type $Fetch, FetchError, type FetchOptions, ofetch } from 'ofetch';
 
 import { ArriErrorInstance, isArriError } from './errors';
 import { getHeaders } from './utils';
@@ -111,13 +111,14 @@ export async function arriSafeRequest<
             };
         }
         if (err instanceof FetchError) {
+            const fetchErr = err as any;
             return {
                 success: false,
                 error: new ArriErrorInstance({
-                    code: err.statusCode ?? 0,
-                    message: err.statusMessage ?? '',
-                    stack: err.stack,
-                    data: err.data,
+                    code: fetchErr.statusCode ?? 0,
+                    message: fetchErr.statusMessage ?? '',
+                    stack: fetchErr.stack,
+                    data: fetchErr.data,
                 }),
             };
         }

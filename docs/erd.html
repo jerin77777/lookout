@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Entity Relationship Diagram</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --border: #334155;
+      --text: #f8fafc;
+      --accent: #38bdf8;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+    header {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+    h1 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .badge {
+      background: #0284c7;
+      color: white;
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 9999px;
+    }
+    .controls {
+      display: flex;
+      gap: 8px;
+    }
+    button {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: background 0.15s;
+    }
+    button:hover {
+      background: var(--border);
+    }
+    #canvas-container {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+      background: radial-gradient(circle, #1e293b 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+    #diagram {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    svg {
+      width: 100% !important;
+      height: 100% !important;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Entity Relationship Diagram <span class="badge">1 Entities</span></h1>
+    <div class="controls">
+      <button onclick="panZoom.zoomIn()">Zoom In (+)</button>
+      <button onclick="panZoom.zoomOut()">Zoom Out (-)</button>
+      <button onclick="panZoom.resetZoom(); panZoom.center();">Reset View</button>
+    </div>
+  </header>
+  <div id="canvas-container">
+    <div id="diagram" class="mermaid">
+erDiagram
+    USERS {
+        string id PK
+        string user_name
+        string email_id UK
+        string password
+        boolean is_email_verified
+        string email_verification_otp
+        string otp_expires_at
+        boolean onboarding_completed
+        string gender
+        int age
+        datetime created_at
+        datetime updated_at
+    }
+
+    </div>
+  </div>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'dark',
+      themeVariables: {
+        darkMode: true,
+        background: '#0f172a',
+        primaryColor: '#1e293b',
+        primaryTextColor: '#f8fafc',
+        primaryBorderColor: '#38bdf8',
+        lineColor: '#94a3b8',
+        secondaryColor: '#334155',
+        tertiaryColor: '#0f172a'
+      }
+    });
+
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const svgElement = document.querySelector('#diagram svg');
+        if (svgElement) {
+          window.panZoom = svgPanZoom(svgElement, {
+            zoomEnabled: true,
+            controlIconsEnabled: false,
+            fit: true,
+            center: true,
+            minZoom: 0.2,
+            maxZoom: 10
+          });
+        }
+      }, 500);
+    });
+  </script>
+</body>
+</html>

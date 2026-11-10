@@ -1,14 +1,21 @@
 import os
-# Prevent OpenMP runtime conflict on Windows (Torch vs CTranslate2/Faster-Whisper)
+# Prevent OpenMP runtime conflict on Windows
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 os.environ["OMP_NUM_THREADS"] = "1"
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 import json
 import logging
+import datetime
 import socketio
 from typing import Optional
 from pydantic import BaseModel
-from fastapi import File, UploadFile, Form, Request, HTTPException, WebSocket
+from fastapi import File, UploadFile, Form, Request, HTTPException
 from fastapi.responses import JSONResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 
@@ -24,30 +31,22 @@ logger = logging.getLogger("PyBackend")
 arri_app = ArriApp(name="Vyom Python Backend", version="1.0.0")
 fastapi_app = arri_app.app
 
-# Connect DB & Preload AI Models on startup
+# Connect DB on startup
 @fastapi_app.on_event("startup")
 async def startup_event():
     logger.info("Initializing Python Arri Backend...")
-    await db.connect()
-    init_db()
+    try:
+        await db.connect()
+        init_db()
+    except Exception as e:
+        logger.critical(f"❌ [Fatal Startup Error] Database initialization failed: {e}")
+        logger.critical("❌ Server startup aborted: Offline/standalone mode is disabled. An active database connection is required.")
+        raise
 
-    # Pre-load AI models in background so client connections/inferences are instantaneous
-    def _preload_ai():
-        try:
-            from backend.services.hybrik_service import hybrik_service
-            logger.info("Pre-loading HybrIK AI model on server startup...")
-            hybrik_service.load_models()
-        except Exception as e:
-            logger.error(f"Error preloading HybrIK model on startup: {e}")
-
-        try:
-            from backend.stt.server import transcriber
-            logger.info("Pre-loading Faster-Whisper & Silero VAD on server startup...")
-        except Exception as e:
-            logger.error(f"Error preloading STT models on startup: {e}")
-
-    import asyncio
-    asyncio.get_event_loop().run_in_executor(None, _preload_ai)
+@fastapi_app.on_event("shutdown")
+async def shutdown_event():
+    logger.info("Shutting down Python Arri Backend...")
+    await db.disconnect()
 
 
 # Auto-discover RPC Procedures from backend/procedures
@@ -64,9 +63,7 @@ async def root():
             "definition": "/__definition",
             "health": "/health",
             "media_upload": "/media/upload",
-            "socket_io": "/socket.io/",
-            "ws_infer": "/ws/infer",
-            "ws_stt": "/ws/stt"
+            "socket_io": "/socket.io/"
         }
     }
 
@@ -188,37 +185,22 @@ async def upload_music_route(
         track_title = title or os.path.splitext(file.filename)[0]
         audio_url = f"/uploads/meditation/raw/{filename}"
         stream_url = f"/api/music/stream/{music_id}"
-
-        from backend.db.sqlmodel_db import engine, MusicModel
-        from sqlmodel import Session
-        with Session(engine) as session:
-            music_record = MusicModel(
-                id=music_id,
-                title=track_title,
-                artist=artist,
-                category=category,
-                audio_url=audio_url,
-                stream_url=stream_url,
-                cover_image_url=coverImageUrl or "https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?w=500&auto=format&fit=crop",
-                duration=180.0,
-            )
-            session.add(music_record)
-            session.commit()
-            session.refresh(music_record)
+        cover_image = coverImageUrl or "https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?w=500&auto=format&fit=crop"
+        created_at_iso = datetime.datetime.utcnow().isoformat()
 
         return {
             "success": True,
             "message": "Music track uploaded and stream optimized successfully",
             "track": {
-                "id": music_record.id,
-                "title": music_record.title,
-                "artist": music_record.artist,
-                "category": music_record.category,
-                "audioUrl": music_record.audio_url,
-                "streamUrl": music_record.stream_url,
-                "coverImageUrl": music_record.cover_image_url,
-                "duration": music_record.duration,
-                "createdAt": music_record.created_at.isoformat(),
+                "id": music_id,
+                "title": track_title,
+                "artist": artist,
+                "category": category,
+                "audioUrl": audio_url,
+                "streamUrl": stream_url,
+                "coverImageUrl": cover_image,
+                "duration": 180.0,
+                "createdAt": created_at_iso,
             }
         }
     except Exception as e:
@@ -231,15 +213,7 @@ class SetDefaultMusicBody(BaseModel):
 @fastapi_app.post("/api/music/set-default")
 async def set_default_music_route(body: SetDefaultMusicBody):
     try:
-        from backend.db.sqlmodel_db import engine, MusicModel
-        from sqlmodel import Session, select
         target_id = body.id.strip() if body.id else None
-        with Session(engine) as session:
-            records = session.exec(select(MusicModel)).all()
-            for r in records:
-                r.is_default = (r.id == target_id)
-                session.add(r)
-            session.commit()
         return {"success": True, "message": f"Default music set to {target_id or 'None'}"}
     except Exception as e:
         logger.error(f"Set default music error: {e}")
@@ -268,39 +242,10 @@ async def stream_music_route(identifier: str, request: Request):
     return range_requests_response(request, file_path, content_type)
 
 
-# HybrIK AI Service Endpoints & Health Check
+# Health Check
 @fastapi_app.get("/health")
 async def health_check():
-    from backend.services.hybrik_service import hybrik_service
-    return hybrik_service.get_status()
-
-@fastapi_app.websocket("/ws/infer")
-async def websocket_hybrik_infer(websocket: WebSocket):
-    from backend.services.hybrik_service import hybrik_service
-    await websocket.accept()
-    logger.info("🌐 [Main Backend] WebSocket client connected for real-time HybrIK inference.")
-    try:
-        while True:
-            data = await websocket.receive_text()
-            res = hybrik_service.infer_base64_image(data)
-            await websocket.send_json(res)
-    except Exception as e:
-        logger.info(f"WebSocket client disconnected/closed: {e}")
-
-# Real-Time STT WebSocket Endpoint
-@fastapi_app.websocket("/ws/stt")
-async def websocket_stt_endpoint(websocket: WebSocket):
-    client_host = websocket.client.host if hasattr(websocket, "client") and websocket.client else "unknown"
-    client_port = websocket.client.port if hasattr(websocket, "client") and websocket.client else "unknown"
-    logger.info(f"🌐 [Main Backend] Incoming STT WebSocket request from {client_host}:{client_port} at /ws/stt")
-    try:
-        from backend.stt.server import STTSession
-        await websocket.accept()
-        logger.info(f"✅ [Main Backend] STT WebSocket accepted for {client_host}:{client_port}")
-        session = STTSession(websocket)
-        await session.handle_connection()
-    except Exception as e:
-        logger.error(f"❌ [Main Backend] STT WebSocket error for {client_host}:{client_port}: {e}", exc_info=True)
+    return {"status": "ok"}
 
 # Integrate Socket.IO into the app via a proper ASGI wrapper.
 # This avoids the issue where the socketio.ASGIApp wrapper gets bypassed

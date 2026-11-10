@@ -1,18 +1,51 @@
 import os
 import logging
 from datetime import datetime
-from typing import Any, Dict, List, Optional
-from sqlmodel import SQLModel, Field, create_engine, Session, select, Column, JSON
+from typing import Optional
+from sqlmodel import SQLModel, Field, create_engine, Session, select
+
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
 
 logger = logging.getLogger("SQLModelDB")
 
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:0007!asd@localhost:5432/vyom")
-# Convert postgresql:// to postgresql+psycopg2:// or async driver if needed
-if DATABASE_URL.startswith("postgresql://"):
-    DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+psycopg2://", 1)
+DATABASE_URL = os.getenv("DATABASE_URL")
 
-# SQLModel Engine
-engine = create_engine(DATABASE_URL, echo=False)
+engine = None
+
+if DATABASE_URL:
+    # Ensure PostgreSQL driver is present when using PostgreSQL
+    if DATABASE_URL.startswith("postgresql://") or DATABASE_URL.startswith("postgres://"):
+        try:
+            import psycopg2
+        except ImportError as e:
+            err_msg = (
+                f"Missing required PostgreSQL driver 'psycopg2': {e}. "
+                "Please install psycopg2 (e.g. `pip install psycopg2-binary`) to connect SQLModel to PostgreSQL. "
+                "Server startup aborted."
+            )
+            logger.critical(f"❌ {err_msg}")
+            raise RuntimeError(err_msg) from e
+
+        if DATABASE_URL.startswith("postgresql://"):
+            engine_url = DATABASE_URL.replace("postgresql://", "postgresql+psycopg2://", 1)
+        elif DATABASE_URL.startswith("postgres://"):
+            engine_url = DATABASE_URL.replace("postgres://", "postgresql+psycopg2://", 1)
+        else:
+            engine_url = DATABASE_URL
+    else:
+        engine_url = DATABASE_URL
+
+    # SQLModel Engine
+    try:
+        engine = create_engine(engine_url, echo=False)
+    except Exception as e:
+        err_msg = f"Failed to initialize SQLModel engine for {engine_url}: {e}. Server cannot run without database."
+        logger.critical(f"❌ {err_msg}")
+        raise RuntimeError(err_msg) from e
 
 # SQLModel Table Definitions
 class User(SQLModel, table=True):
@@ -31,177 +64,30 @@ class User(SQLModel, table=True):
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 
-class YogaTutorialModel(SQLModel, table=True):
-    __tablename__ = "yoga_tutorials"  # type: ignore
-
-    id: str = Field(primary_key=True)
-    title: str
-    description: Optional[str] = None
-    video_url: str
-    raw_video_url: str
-    cover_image_url: str
-    duration: int
-    checkpoints: List[Dict[str, Any]] = Field(default=[], sa_column=Column(JSON))
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
-
-class PoseModel(SQLModel, table=True):
-    __tablename__ = "poses"  # type: ignore
-
-    id: str = Field(primary_key=True)
-    name: str
-    skeleton: List[Dict[str, Any]] = Field(default=[], sa_column=Column(JSON))
-    last_detected_pose: Optional[List[Dict[str, Any]]] = Field(default=None, sa_column=Column(JSON))
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
-
-class FoodEntryModel(SQLModel, table=True):
-    __tablename__ = "food_entries"  # type: ignore
-
-    id: str = Field(primary_key=True)
-    user_id: str = Field(index=True)
-    meal_type: str
-    timestamp: datetime
-    photo_url: str
-    food_label: str
-    class_index: int
-    confidence: float
-    calories: float
-    mass: float
-    fats: float
-    carbs: float
-    proteins: float
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-
-class MealScheduleModel(SQLModel, table=True):
-    __tablename__ = "meal_schedules"  # type: ignore
-
-    user_id: str = Field(primary_key=True)
-    breakfast_time: str = Field(default="08:00:00")
-    lunch_time: str = Field(default="12:00:00")
-    dinner_time: str = Field(default="19:00:00")
-    breakfast_enabled: bool = Field(default=True)
-    lunch_enabled: bool = Field(default=True)
-    dinner_enabled: bool = Field(default=True)
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
-
-class TVDeviceModel(SQLModel, table=True):
-    __tablename__ = "tv_devices"  # type: ignore
-
-    id: str = Field(primary_key=True)
-    user_id: str = Field(index=True)
-    device_id: str = Field(unique=True)
-    device_name: str
-    auth_token: str
-    last_seen: datetime = Field(default_factory=datetime.utcnow)
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
-
-class MusicModel(SQLModel, table=True):
-    __tablename__ = "music"  # type: ignore
-
-    id: str = Field(primary_key=True)
-    title: str
-    artist: Optional[str] = Field(default="Unknown Artist")
-    category: Optional[str] = Field(default="Meditation")
-    audio_url: str
-    stream_url: str
-    cover_image_url: Optional[str] = Field(default="")
-    duration: float = Field(default=0.0)
-    is_default: bool = Field(default=False)
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
-
-class GeminiCacheModel(SQLModel, table=True):
-    __tablename__ = "gemini_cache"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    prompt_hash: str = Field(index=True)
-    response_text: str
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-
-
-class TherapyHistoryModel(SQLModel, table=True):
-    __tablename__ = "therapy_history"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    session_id: str = Field(index=True)
-    role: str  # 'user' or 'model'
-    message: str
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-
-
-def seed_default_music(session: Session):
-    try:
-        existing = session.exec(select(MusicModel)).first()
-        if existing:
-            return
-        logger.info("Seeding default meditation music tracks into DB...")
-        import uuid
-        sample_tracks = [
-            {
-                "id": str(uuid.uuid4()),
-                "title": "Zen Garden Calm",
-                "artist": "Vyom Meditation",
-                "category": "Zen",
-                "audio_url": "/uploads/meditation/stream/zen_garden.mp3",
-                "stream_url": "/api/music/stream/zen_garden",
-                "cover_image_url": "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=500&auto=format&fit=crop",
-                "duration": 300.0,
-                "is_default": True,
-            },
-            {
-                "id": str(uuid.uuid4()),
-                "title": "Deep Binaural Om",
-                "artist": "Mindful Healing",
-                "category": "Binaural",
-                "audio_url": "/uploads/meditation/stream/deep_binaural.mp3",
-                "stream_url": "/api/music/stream/deep_binaural",
-                "cover_image_url": "https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?w=500&auto=format&fit=crop",
-                "duration": 420.0,
-                "is_default": False,
-            },
-            {
-                "id": str(uuid.uuid4()),
-                "title": "Ambient Ocean Breeze",
-                "artist": "Serenity Audio",
-                "category": "Ambient",
-                "audio_url": "/uploads/meditation/stream/ocean_breeze.mp3",
-                "stream_url": "/api/music/stream/ocean_breeze",
-                "cover_image_url": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500&auto=format&fit=crop",
-                "duration": 360.0,
-                "is_default": False,
-            }
-        ]
-        for t in sample_tracks:
-            session.add(MusicModel(
-                id=t["id"],
-                title=t["title"],
-                artist=t["artist"],
-                category=t["category"],
-                audio_url=t["audio_url"],
-                stream_url=t["stream_url"],
-                cover_image_url=t["cover_image_url"],
-                duration=t["duration"],
-                is_default=t["is_default"],
-            ))
-        session.commit()
-        logger.info("Default meditation music seeded successfully.")
-    except Exception as e:
-        logger.error(f"Error seeding default music: {e}")
 
 def init_db():
+    if not engine:
+        err_msg = (
+            "DATABASE_URL environment variable is missing or empty. "
+            "Please configure DATABASE_URL in your .env file "
+            "(e.g. DATABASE_URL=postgresql://<username>:<password>@localhost:5432/<dbname>)."
+        )
+        logger.critical(f"❌ {err_msg}")
+        raise RuntimeError(err_msg)
     try:
+        logger.info("Initializing SQLModel schema...")
         SQLModel.metadata.create_all(engine)
-        logger.info("SQLModel tables initialized successfully.")
-        with Session(engine) as session:
-            seed_default_music(session)
+        logger.info("✅ SQLModel tables initialized successfully.")
     except Exception as e:
-        logger.error(f"SQLModel init failed ({e}). Server crashing.")
+        logger.critical(f"❌ SQLModel database initialization failed: {e}. Server cannot start without database.")
         raise RuntimeError(f"Could not initialize SQLModel database: {e}") from e
 
 def get_session():
+    if not engine:
+        raise RuntimeError(
+            "DATABASE_URL environment variable is missing or empty. "
+            "Please configure DATABASE_URL in your .env file."
+        )
     with Session(engine) as session:
         yield session
 

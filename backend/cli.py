@@ -88,7 +88,7 @@ def ensure_nginx_started():
                 subprocess.Popen([nginx_exe], cwd=nginx_dir, shell=True)
                 print("Nginx started successfully.", flush=True)
             else:
-                print(f"Error: Nginx executable not found at {nginx_exe}", flush=True)
+                pass # Nginx optional; FastAPI directly serves requests
         else:
             print("Nginx is already running.", flush=True)
     except Exception as e:

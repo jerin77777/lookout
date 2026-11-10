@@ -95,7 +95,7 @@ export function arriSseRequest<
         }, intervalDuration) as any;
     }
     const controller = eventSource.listen({
-        onMessage(message) {
+        onMessage(message: any) {
             resetInterval();
             if (
                 message.event === 'message' ||
@@ -111,7 +111,7 @@ export function arriSseRequest<
             }
         },
         onRequest: options.onRequest,
-        onRequestError(context) {
+        onRequestError(context: any) {
             clearInterval(interval);
             if (opts.onError) opts.onError(context.error);
             options.onRequestError?.({
@@ -123,7 +123,7 @@ export function arriSseRequest<
                 }),
             });
         },
-        onResponse(context) {
+        onResponse(context: any) {
             const heartbeatIntervalHeader = Number(
                 context.response?.headers.get('heartbeat-interval') ?? 0,
             );
@@ -137,7 +137,7 @@ export function arriSseRequest<
             }
             options.onResponse?.(context);
         },
-        async onResponseError(context) {
+        async onResponseError(context: any) {
             clearInterval(interval);
             if (opts.onError) opts.onError(context.error);
             if (!options.onResponseError) return;

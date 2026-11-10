@@ -1,6 +1,4 @@
 import logging
-import json
-import asyncio
 import time
 from typing import Any, Dict, Optional, Set
 import socketio
@@ -10,7 +8,7 @@ logger = logging.getLogger("EventServer")
 class EventServer:
     """
     Socket.IO Event Server integrated directly into Python Arri Backend.
-    Handles Socket.IO connections, real-time STT streaming, and event broadcasting.
+    Handles Socket.IO connections and event broadcasting.
     """
     def __init__(self):
         self.sio = socketio.AsyncServer(
@@ -20,7 +18,6 @@ class EventServer:
             engineio_logger=True,
         )
         self.user_sockets: Dict[str, Set[str]] = {}
-        self.stt_sessions: Dict[str, Any] = {}
         self._setup_events()
 
     def _setup_events(self):
@@ -48,59 +45,23 @@ class EventServer:
             else:
                 logger.info(f"🔌 [Socket.IO] Connected socket {sid}")
 
-            # Instantiate STTSession for this socket
-            try:
-                from backend.stt.server import STTSession
-                session = STTSession(websocket=None, sio=self.sio, sid=sid)
-                self.stt_sessions[sid] = session
-                await session.start_session()
-                logger.info(f"🎙️ [Socket.IO STT] Started STTSession for socket {sid}")
-            except Exception as e:
-                logger.error(f"❌ [Socket.IO STT] Error starting session for {sid}: {e}")
-
         @self.sio.event
         async def disconnect(sid: str):
             for uid, sids in list(self.user_sockets.items()):
                 sids.discard(sid)
                 if not sids:
                     del self.user_sockets[uid]
-            
-            session = self.stt_sessions.pop(sid, None)
-            if session:
-                session.is_running = False
-                await session.audio_queue.put(None)
-                logger.info(f"🎙️ [Socket.IO STT] Stopped STTSession for socket {sid}")
 
             logger.info(f"🔌 [Socket.IO] Disconnected socket {sid}")
 
-        @self.sio.on("audio_chunk")
-        async def handle_audio_chunk(sid, data):
-            session = self.stt_sessions.get(sid)
-            if session:
-                if isinstance(data, (bytes, bytearray)):
-                    await session.audio_queue.put(bytes(data))
-                elif isinstance(data, list):
-                    await session.audio_queue.put(bytes(data))
-
-        @self.sio.on("command")
-        async def handle_command(sid, data):
-            session = self.stt_sessions.get(sid)
-            if session:
-                if isinstance(data, str):
-                    await session._handle_text_payload(data)
-                elif isinstance(data, dict):
-                    await session._handle_text_payload(json.dumps(data))
-
         @self.sio.on("ping")
         async def handle_ping(sid, data):
-            session = self.stt_sessions.get(sid)
-            if session:
-                client_timestamp = data.get("timestamp", 0) if isinstance(data, dict) else 0
-                await session.send_json({
-                    "type": "pong",
-                    "timestamp": client_timestamp,
-                    "server_time": int(time.time() * 1000),
-                })
+            client_timestamp = data.get("timestamp", 0) if isinstance(data, dict) else 0
+            await self.sio.emit("pong", {
+                "type": "pong",
+                "timestamp": client_timestamp,
+                "server_time": int(time.time() * 1000),
+            }, to=sid)
 
     async def send(self, socket_id: str, body: Any, event: str = "message") -> bool:
         """

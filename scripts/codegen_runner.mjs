@@ -26,9 +26,8 @@ if (process.argv[2]) {
 
 if (!genConfigs || genConfigs.length === 0) {
   genConfigs = [
+    { name: "typescript", client_name: "AvatarArriClient", output_file: "avarar-creator/src/services/arri_client.rpc.ts" },
     { name: "typescript", client_name: "ArriClient", output_file: "yoga/src/services/arri_client.rpc.ts" },
-    { name: "dart", client_name: "ArriClient", output_file: "frontend_tv/lib/services/arri_client.rpc.dart" },
-    { name: "dart", client_name: "ArriClient", output_file: "frontend/lib/services/arri_client.rpc.dart" },
   ];
 }
 

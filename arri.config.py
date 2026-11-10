@@ -17,6 +17,11 @@ CONFIG: Dict[str, Any] = {
     "generators": [
         {
             "name": "typescript",
+            "client_name": "AvatarArriClient",
+            "output_file": "avarar-creator/src/services/arri_client.rpc.ts",
+        },
+        {
+            "name": "typescript",
             "client_name": "ArriClient",
             "output_file": "yoga/src/services/arri_client.rpc.ts",
         },

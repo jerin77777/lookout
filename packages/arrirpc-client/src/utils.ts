@@ -1,4 +1,4 @@
-import { EventSourcePlusOptions } from 'event-source-plus';
+import type { EventSourcePlusOptions } from 'event-source-plus';
 
 export async function getHeaders(
     input: EventSourcePlusOptions['headers'],
@@ -6,7 +6,7 @@ export async function getHeaders(
     if (typeof input === 'function') {
         const result = input();
         if ('then' in result && typeof result.then === 'function') {
-            return result.then((data) => data as Record<string, string>);
+            return (result as Promise<any>).then((data: any) => data as Record<string, string>);
         }
         return result as Record<string, string>;
     }

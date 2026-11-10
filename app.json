@@ -6,20 +6,6 @@
     "description": "Python Arri RPC Server"
   },
   "procedures": {
-    "ai.hybrikHealth": {
-      "transport": "http",
-      "method": "get",
-      "path": "/rpc/ai/hybrikHealth",
-      "params": "HybrIkHealthParams",
-      "response": "HybrIkHealthResponse"
-    },
-    "ai.hybrikInfer": {
-      "transport": "http",
-      "method": "post",
-      "path": "/rpc/ai/hybrikInfer",
-      "params": "HybrIkInferParams",
-      "response": "HybrIkInferResponse"
-    },
     "ai.generateVoice": {
       "transport": "http",
       "method": "post",
@@ -248,103 +234,6 @@
     }
   },
   "definitions": {
-    "HybrIkHealthParams": {
-      "properties": {},
-      "metadata": {
-        "id": "HybrIkHealthParams"
-      }
-    },
-    "HybrIkHealthResponse": {
-      "properties": {
-        "status": {
-          "type": "string"
-        },
-        "modelLoaded": {
-          "type": "boolean"
-        },
-        "device": {
-          "type": "string"
-        },
-        "jointCount": {
-          "type": "int32"
-        }
-      },
-      "metadata": {
-        "id": "HybrIkHealthResponse"
-      },
-      "optionalProperties": {
-        "error": {
-          "type": "string"
-        }
-      }
-    },
-    "HybrIkInferParams": {
-      "properties": {
-        "image": {
-          "type": "string"
-        }
-      },
-      "metadata": {
-        "id": "HybrIkInferParams"
-      }
-    },
-    "HybrIkInferResponse": {
-      "properties": {
-        "success": {
-          "type": "boolean"
-        }
-      },
-      "metadata": {
-        "id": "HybrIkInferResponse"
-      },
-      "optionalProperties": {
-        "message": {
-          "type": "string"
-        },
-        "processTimeMs": {
-          "type": "float64"
-        },
-        "bbox": {
-          "elements": {
-            "type": "float64"
-          }
-        },
-        "jointNames": {
-          "elements": {
-            "type": "string"
-          }
-        },
-        "joints3d": {
-          "elements": {
-            "elements": {
-              "type": "float64"
-            }
-          }
-        },
-        "joints2d": {
-          "elements": {
-            "elements": {
-              "type": "float64"
-            }
-          }
-        },
-        "bodyPose": {
-          "elements": {
-            "type": "float64"
-          }
-        },
-        "betas": {
-          "elements": {
-            "type": "float64"
-          }
-        },
-        "camera": {
-          "elements": {
-            "type": "float64"
-          }
-        }
-      }
-    },
     "TextToSpeechParams": {
       "properties": {
         "text": {
