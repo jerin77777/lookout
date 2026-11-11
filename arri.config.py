@@ -21,16 +21,6 @@ CONFIG: Dict[str, Any] = {
             "output_file": "avarar-creator/src/services/arri_client.rpc.ts",
         },
         {
-            "name": "typescript",
-            "client_name": "ArriClient",
-            "output_file": "yoga/src/services/arri_client.rpc.ts",
-        },
-        {
-            "name": "dart",
-            "client_name": "ArriClient",
-            "output_file": "frontend_tv/lib/services/arri_client.rpc.dart",
-        },
-        {
             "name": "dart",
             "client_name": "ArriClient",
             "output_file": "frontend/lib/services/arri_client.rpc.dart",

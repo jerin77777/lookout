@@ -25,8 +25,7 @@ if not CONFIG:
     CONFIG = {
         "server": {"host": "0.0.0.0", "port": 5000, "output_definition": ".output/__definition.json"},
         "generators": [
-            {"name": "typescript", "client_name": "ArriClient", "output_file": "yoga/src/services/arri_client.rpc.ts"},
-            {"name": "dart", "client_name": "ArriClient", "output_file": "frontend_tv/lib/services/arri_client.rpc.dart"},
+            {"name": "typescript", "client_name": "AvatarArriClient", "output_file": "avarar-creator/src/services/arri_client.rpc.ts"},
             {"name": "dart", "client_name": "ArriClient", "output_file": "frontend/lib/services/arri_client.rpc.dart"},
         ]
     }
